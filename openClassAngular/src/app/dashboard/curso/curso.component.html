@@ -1,0 +1,98 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-6">
+                <h3>Cursos</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html" data-original-title="" title=""><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-home">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg></a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid product-wrapper">
+    <div class="product-grid">
+        <div class="feature-products">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <form>
+                        <div class="form-group m-0">
+                            <input class="form-control" type="search" placeholder="Search.." data-toggle="modal"
+                                data-target=".bd-example-modal-lg" data-original-title="" title=""><i
+                                class="fa fa-search"></i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="product-wrapper-grid">
+            <div class="row">
+                <div *ngFor="let curso of cursosMuestra" class="col-xl-3 col-sm-6 xl-4">
+                    <a href="/dashboard/presentacion-curso/{{curso.cursoId}}">
+                        <div class="card">
+                            <div class="product-box">
+                                <div class="product-img"><img class="img-fluid" src="{{curso.cursoMinuatura}}" alt=""
+                                        data-original-title="" title="">
+                                </div>
+                                <div class="product-details">
+                                    <h4>{{curso.cursoNombre}}</h4>
+                                    <p>{{curso.categoria.categoriaNombre}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Buscar</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input type="text" class="col-lg-12 busqueda" (keyup.enter)="filtrarPorNombre()"
+                            [(ngModel)]="buscar" placeholder="buscar...">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="product-filter">
+                            <h6 class="f-w-600">Categoria</h6>
+                            <div class="checkbox-animated mt-0">
+                                <div *ngFor="let categoria of categorias" class="radio radio-primary">
+                                    <input id="{{categoria.categoriaId}}"
+                                        (click)="filtrarCategoria(categoria.categoriaId)" type="radio" name="radio1"
+                                        value="{{categoria.categoriaId}}" data-original-title="" title="">
+                                    <label for="{{categoria.categoriaId}}">{{categoria.categoriaNombre}}</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <button class="btn btn-success" (click)="resetearFiltro()">Resetear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

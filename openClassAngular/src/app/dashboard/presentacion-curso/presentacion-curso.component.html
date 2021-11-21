@@ -1,0 +1,194 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-10">
+                <h3>Curso: {{cursoDatos.cursoNombre}}</h3>
+            </div>
+            <div class="col-lg-2" *ngIf="!validaPropiedadCurso && !verificaUsuarioRegistrado">
+                <button class="btn btn-success" (click)="registarme()"><i class="fa fa-check"></i> Registrarme</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalle del curso</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4" *ngIf="validaPropiedadCurso">
+                            <p>Este curso es de mi propiedad</p>
+                        </div>
+                        <div class="col-lg-4" *ngIf="!validaPropiedadCurso">
+                            <div class="col-lg-12">
+                                <div class="ttl-info text-left">
+                                    <h6><i class="fa fa-user"></i> Creador</h6>
+                                    <span>{{usuarioPropietarioCurso.usuarioNombres}}
+                                        {{usuarioPropietarioCurso.usuarioApellidos}}</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="ttl-info text-left">
+                                    <div class="user-image">
+                                        <div class="avatar"><img alt="" src="{{usuarioPropietarioCurso.usuarioFoto}}"
+                                                class="oc-fotoPerfil" data-original-title="" title=""></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <h4>Clases <button *ngIf="validaPropiedadCurso" class="btn" data-toggle="modal"
+                                    data-target=".agregarClase"><i class="fa fa-plus"></i></button></h4>
+                            <div class="taskadd">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr *ngFor="let curso of cursoDetalle">
+                                                <td>
+                                                    <h6 class="task_title_0">{{curso.claseNombre}}</h6>
+                                                </td>
+                                                <td>
+                                                    <button *ngIf="validaPropiedadCurso" class="btn" data-toggle="modal"
+                                                        data-target=".editarClase" (click)="editar(curso)"><i
+                                                            class="fa fa-pencil"></i></button>
+                                                    <button *ngIf="validaPropiedadCurso" class="btn"
+                                                        (click)="eliminarClase(curso.claseID)"><i
+                                                            class="fa fa-trash"></i></button>
+                                                    <a class="btn" *ngIf="validaPropiedadCurso || verificaUsuarioRegistrado"
+                                                        href="/dashboard/detalle-clase/{{curso.curso.cursoId}}/{{curso.claseID}}"><i
+                                                            class="fa fa-eye"></i></a>
+                                                    <span class="oc-color-danger" *ngIf="!validaPropiedadCurso && !verificaUsuarioRegistrado">
+                                                        <i class="fa fa-info-circle "></i> Solo disponible para los registrados
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade editarClase" tabindex="-1" #closebutton role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Editando clase</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="row" [formGroup]="editarClase">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Nombre de la clase</label>
+                            <input class="form-control" type="text" [(ngModel)]="claseEditar.claseNombre" required
+                                formControlName="nombre" placeholder="Nombre de la clase">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-form-label">Video</label>
+                            <input class="form-control fileOC" #inputVideoAgregarEditar (change)="selectVideo($event)"
+                                type="file" id="curso.claseFile" required name="curso.claseFile">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="loader-box oc-carga" *ngIf="cargaVideo">
+                            <div class="loader-38"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" formControlName="url" [(ngModel)]="claseEditar.claseUrl">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Descripcion</label>
+                            <textarea class="form-control" formControlName="descripcion"
+                                placeholder="Descripcion de video introductorio" required
+                                [(ngModel)]="claseEditar.claseDescripcion"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <video [src]="claseEditar.claseUrl" class="col-lg-12" controls></video>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" (click)="limpiarEditarClase()" data-dismiss="modal"
+                    data-original-title="" title="">Cerrar</button>
+                <button class="btn btn-primary" type="button" (click)="actualizar()" [disabled]="editarClase.invalid"
+                    title="">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade agregarClase" tabindex="-1" #closebuttonAgregar role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Agregar clase</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate class="row" [formGroup]="agregarFrmClase">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Nombre de la clase</label>
+                            <input class="form-control" type="text" [(ngModel)]="claseAgregar.claseNombre" required
+                                formControlName="nombre" placeholder="Nombre de la clase">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label class="col-form-label">Video</label>
+                            <input class="form-control fileOC" #inputVideoAgregarClase type="file" id="curso.claseFile"
+                                required (change)="selectVideoAgregarClase($event)" name="curso.claseFile">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="loader-box oc-carga" *ngIf="cargaVideoAgregar">
+                            <div class="loader-38"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Descripcion</label>
+                            <textarea class="form-control" formControlName="descripcion"
+                                placeholder="Descripcion de video introductorio" required
+                                [(ngModel)]="claseAgregar.claseDescripcion"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <video [src]="urlVideoAgregar" *ngIf="formatVideoAgregar==='video' && urlVideoAgregar"
+                            class="col-lg-12" controls></video> <br />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="limpiarAgregarClase()"
+                    data-original-title="" title="">Cerrar</button>
+                <button class="btn btn-primary" type="button" (click)="agregarClase()"
+                    [disabled]="agregarFrmClase.invalid" data-original-title="" title="">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>

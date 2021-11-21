@@ -1,0 +1,127 @@
+<div class="tap-top"><i data-feather="chevrons-up"></i></div>
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <div class="page-main-header">
+        <div class="main-header-right row m-0">
+            <form class="form-inline search-full" action="#" method="get">
+                <div class="form-group w-100">
+                    <div class="Typeahead Typeahead--twitterUsers">
+                        <div class="u-posRelative">
+                            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+                                placeholder="Search Cuba .." name="q" title="" autofocus>
+                            <div class="spinner-border Typeahead-spinner" role="status"><span
+                                    class="sr-only">Loading...</span></div><i class="close-search" data-feather="x"></i>
+                        </div>
+                        <div class="Typeahead-menu"></div>
+                    </div>
+                </div>
+            </form>
+            <div class="main-header-left">
+                <div class="logo-wrapper"><a href="index.html"><img class="img-fluid"
+                            src="../assets/images/logo/logo.png" alt=""></a></div>
+                <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="grid" id="sidebar-toggle">
+                    </i></div>
+            </div>
+            <div class="left-menu-header col horizontal-wrapper pl-0">
+                <ul class="horizontal-menu">
+                    <button class="btn btn-success" *ngIf="usuario.usuarioTipo!='MS'" data-toggle="modal" data-target=".registroMaestro" >Registrarme como maestro</button>
+                </ul>
+            </div>
+            <div class="nav-right col-8 pull-right right-menu">
+                <ul class="nav-menus">
+                    <li class="profile-nav onhover-dropdown p-0">
+                        <div class="media profile-media"><img class="b-r-10"
+                                src="../assets/images/dashboard/profile.jpg" alt="">
+                            <div class="media-body"><span>{{usuario.usuarioNombres}} {{usuario.usuarioApellidos}}</span>
+                                <p class="mb-0 font-roboto" *ngIf="usuario.usuarioTipo=='MS'">Maestro <i
+                                        class="middle fa fa-angle-down"></i></p>
+                                <p class="mb-0 font-roboto"
+                                    *ngIf="usuario.usuarioTipo=='AL' || usuario.usuarioTipo=='CE'"><i
+                                        *ngIf="usuario.usuarioTipo=='CE'" data-container="body" data-toggle="popover"
+                                        data-placement="top" title="Correo sin confirmar"
+                                        class="fas fa-info-circle oc-color"></i> Alumno <i
+                                        class="middle fa fa-angle-down"></i></p>
+                            </div>
+                        </div>
+                        <ul class="profile-dropdown onhover-show-div">
+                            <li (click)="irVista('/dashboard/perfil',0)"><i data-feather="user"></i><span>Perfil </span>
+                            </li>
+                            <li (click)="irVista('',1)"><i data-feather="log-in"> </i><span>Cerrar sesion</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="page-body-wrapper sidebar-icon">
+        <header class="main-nav">
+            <div class="logo-wrapper"><a href="index.html"><img class="img-fluid for-light"
+                        src="./assets/images/logo/logo.png" alt=""><img class="img-fluid for-dark"
+                        src="./assets/images/logo/logo_dark.png" alt=""></a>
+                <div class="back-btn"><i class="fa fa-angle-left"></i></div>
+                <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="grid" id="sidebar-toggle">
+                    </i></div>
+            </div>
+            <div class="logo-icon-wrapper"><a href="index.html"><img class="img-fluid"
+                        src="./assets/images/logo/logo-icon.png" alt=""></a></div>
+            <nav>
+                <div class="main-navbar">
+                    <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+                    <div id="mainnav">
+                        <ul class="nav-menu custom-scrollbar">
+                            <li class="back-btn"><a href="index.html"><img class="img-fluid"
+                                        src="./assets/images/logo/logo-icon.png" alt=""></a>
+                                <div class="mobile-back text-right"><span>Back</span><i class="fa fa-angle-right pl-2"
+                                        aria-hidden="true"></i></div>
+                            </li>
+
+
+                            <li class="dropdown"><a class="nav-link menu-title link-nav" href="/dashboard"><i
+                                        data-feather="git-pull-request"> </i><span>Dashboard</span></a></li>
+
+                            <li class="dropdown"><a class="nav-link menu-title link-nav" href="/dashboard/curso"><i
+                                        data-feather="git-pull-request"> </i><span>Cursos</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-body">
+            <router-outlet></router-outlet>
+        </div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 footer-copyright">
+                        <p class="mb-0">Copyright 2020 © Cuba All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="pull-right mb-0">Developed with <i class="fa fa-heart font-secondary"></i></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+<div class="modal fade registroMaestro" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myLargeModalLabel">Registrarme como maestro</h4>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-form-label" for="recipient-name">Institucion:</label>
+                <input class="form-control" id="recipient-name" type="text" placeholder="Institucion" [(ngModel)]="institucion" data-original-title="" title="">
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal" data-original-title="" title="">Cerrar</button>
+            <button class="btn btn-primary" type="button" data-original-title="" title="" (click)="actualizaMaestro()">Guardar</button>
+          </div>
+      </div>
+    </div>
+  </div>

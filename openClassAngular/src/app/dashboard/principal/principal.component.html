@@ -1,0 +1,159 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-6">
+                <h3>Dashboard</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6" *ngIf="this.usuario.usuarioTipo=='MS'">
+            <div class="card">
+                <div class="card-header">
+                    <div class="header-top">
+                        <h5 class="m-0">Mis cursos <a href="#" data-toggle="modal"
+                                data-target=".bd-example-modal-lg" data-original-title=""><i
+                                    class="fas fa-plus"></i></a></h5>
+                    </div>
+                </div>
+                <div class="card-body ">
+
+                    <div *ngFor="let cursoCreado of cursosCreados" class="news-update">
+                        <div class="col-lg-6">
+                            <h6><a
+                                    href="/dashboard/presentacion-curso/{{cursoCreado.cursoId}}">{{cursoCreado.cursoNombre}}</a>
+                            </h6>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>{{cursoCreado.categoria.categoriaNombre}}</span>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="header-top">
+                        <h5 class="m-0">Cursos que estoy llevando</h5>
+                    </div>
+                </div>
+                <div class="card-body ">
+                    <div *ngFor="let cursoRegistro of cursosRegistro" class="news-update">
+                        <div class="col-lg-6">
+                            <h6><a
+                                    href="/dashboard/presentacion-curso/{{cursoRegistro.curso.cursoId}}">{{cursoRegistro.curso.cursoNombre}}</a>
+                            </h6>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" #closebutton *ngIf="this.usuario.usuarioTipo=='MS'" tabindex="-1"
+    role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Agregar curso nuevo</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <form novalidate [formGroup]="agregaCursoForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Nombre del curso</label>
+                                <input class="form-control" type="text" [(ngModel)]="curso.cursoNombre" required
+                                    [disabled]="nombre" formControlName="nombre" placeholder="Nombre del curso">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="col-form-label">Numero de sesiones</label>
+                                <input class="form-control" type="number" required
+                                    [(ngModel)]="curso.cursoNumeroSesiones" [disabled]="sesiones"
+                                    formControlName="sesiones" min="2" value="2" placeholder="Minimo 2">
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label class="col-form-label">Categoria</label>
+                                <select [(ngModel)]="curso.categoria.categoriaId" formControlName="categoria" required
+                                    class="form-control" [disabled]="categoria">
+                                    <option [value]="0">Selecciona una categoria</option>
+                                    <option [value]="categoria.categoriaId" *ngFor="let categoria of categorias">
+                                        {{categoria.categoriaNombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Fecha de inicio</label>
+                                <input class="form-control" type="date" required
+                                    min="{{fechaActual | date:'yyyy-MM-dd'}}" [disabled]="fechaInicio"
+                                    [(ngModel)]="curso.cursoFechaInicio" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Video introductorio al curso</label>
+                                <input class="form-control fileOC" type="file" id="curso.cursoFechaInicio" required
+                                    [disabled]="videoInput" (change)="selectVideo($event)"
+                                    name="curso.cursoFechaInicio">
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="loader-box oc-carga" *ngIf="cargaVideo">
+                                <div class="loader-38"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="col-form-label">Miniatura</label>
+                            <input class="form-control fileOC" type="file" id="curso.cursoMinuatura" required
+                                [disabled]="imageInput" (change)="selectMiniatura($event)" name="curso.cursoMinuatura">
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="loader-box oc-carga" *ngIf="cargaImagen">
+                                <div class="loader-38"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <video [src]="urlVideo" *ngIf="formatVideo==='video' && urlVideo" class="col-lg-12"
+                                controls></video> <br />
+                        </div>
+                        <div class="col-lg-5">
+                            <img [src]="urlImage" *ngIf="formatImagen==='imagen' && urlImage" class="col-lg-12">
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <label class="col-form-label">Descripcion</label>
+                                <textarea class="form-control" formControlName="detalle"
+                                    placeholder="Descripcion de video introductorio" required [disabled]="descripcion"
+                                    [(ngModel)]="clase.claseDescripcion"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" data-original-title=""
+                        title="">Cerrar</button>
+                    <button class="btn btn-primary" [disabled]="agregaCursoForm.invalid" type="button"
+                        data-original-title="" title="" (click)="crearCurso()">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
