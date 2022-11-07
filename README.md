@@ -1,8 +1,14 @@
 # OpenClass
-Plataforma de educación
-Registro de usuarios, registro de maestros, registro de cursos, registro de clases.
+Plataforma de educación  
+Funcionalidades principales:  
+* Registro de usuarios, 
+* Validarse como maestro 
+* Registro de cursos
+* Registro de clases
+* Update de videos
 
-Angular 
-Spring Boot
-Ms SqlServer
-Api Dropbox
+Tecnologías:
+* Angular 
+* Spring Boot
+* Ms SqlServer
+* Api Dropbox
