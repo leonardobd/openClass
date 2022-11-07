@@ -1,7 +1,7 @@
 # OpenClass
 Plataforma de educación  
 Funcionalidades principales:  
-* Registro de usuarios, 
+* Registro de usuarios
 * Validarse como maestro 
 * Registro de cursos
 * Registro de clases
